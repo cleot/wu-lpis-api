@@ -117,7 +117,11 @@ class WuLpisApi():
 		
 		form = self.browser.form
 		# Select first element in Select Options Dropdown
-		item = form.find_control("ASPP").get(None ,None, None, 0)
+		#item = form.find_control("ASPP").get(None ,None, None, 0)
+		# 122001_375772 Studienzweig Wirtschaftsinformatik"
+		# 197194_352468 BaWiRe-16/Haupt
+
+		item = form.find_control("ASPP").get("122001_375772")
 		item.selected = True
 
 		r = self.browser.submit()
@@ -125,20 +129,20 @@ class WuLpisApi():
 
 		studies = {}
 		studies = {}
-		for i, entry in enumerate(soup.find('select', {'name': 'ASPP'}).find_all('option')):
-			if len(entry.text.split('/')) == 1:
-				studies[i] = {}
-				studies[i]['id'] = entry['value']
-				studies[i]['title'] = entry['title']
-				studies[i]['name'] = entry.text
-				studies[i]['abschnitte'] = {}
-			elif len(entry.text.split('/')) == 2 and entry.text.split('/')[0] == studies[(i-1) % len(studies)]['name']:
-				studies[(i-1) % len(studies)]['abschnitte'][entry['value']] = {}
-				studies[(i-1) % len(studies)]['abschnitte'][entry['value']]['id'] = entry['value']
-				studies[(i-1) % len(studies)]['abschnitte'][entry['value']]['title'] = entry['title']
-				studies[(i-1) % len(studies)]['abschnitte'][entry['value']]['name'] = entry.text
+		#for i, entry in enumerate(soup.find('select', {'name': 'ASPP'}).find_all('option')):
+		#	if len(entry.text.split('/')) == 1:
+		#		studies[i] = {}
+		#		studies[i]['id'] = entry['value']
+		#		studies[i]['title'] = entry['title']
+		#		studies[i]['name'] = entry.text
+		#		studies[i]['abschnitte'] = {}
+		#	elif len(entry.text.split('/')) == 2 and entry.text.split('/')[0] == studies[(i-1) % len(studies)]['name']:
+		#		studies[(i-1) % len(studies)]['abschnitte'][entry['value']] = {}
+		#		studies[(i-1) % len(studies)]['abschnitte'][entry['value']]['id'] = entry['value']
+		#		studies[(i-1) % len(studies)]['abschnitte'][entry['value']]['title'] = entry['title']
+		#		studies[(i-1) % len(studies)]['abschnitte'][entry['value']]['name'] = entry.text
 
-		self.data['studies'] = studies
+		#self.data['studies'] = studies
 
 		pp = {}
 		for i, planpunkt in enumerate(soup.find('table', {"class" : "b3k-data"}).find('tbody').find_all('tr')):
@@ -206,9 +210,12 @@ class WuLpisApi():
 
 
 	def registration(self):
-		# timeserver = "timeserver.wu.ac.at"
-		# print "syncing time with \"%s\"" % timeserver
+		timeserver = "timeserver.wu.ac.at"
+		print "syncing time with \"%s\"" % timeserver
 		# os.system('sudo ntpdate -u %s' % timeserver)
+		# os.system('sudo sntp -sS pool.ntp.org')
+		os.system('sudo sntp -sS timeserver.wu.ac.at')
+
 		offset = 1.0	# seconds before start time when the request should be made
 		if self.args.planobject and self.args.course:
 			pp = "S" + self.args.planobject
