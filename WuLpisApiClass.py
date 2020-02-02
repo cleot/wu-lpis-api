@@ -210,11 +210,22 @@ class WuLpisApi():
 
 
 	def registration(self):
-		timeserver = "timeserver.wu.ac.at"
-		print "syncing time with \"%s\"" % timeserver
+		#timeserver = "timeserver.wu.ac.at"
+		#print "syncing time with \"%s\"" % timeserver
 		# os.system('sudo ntpdate -u %s' % timeserver)
 		# os.system('sudo sntp -sS pool.ntp.org')
-		os.system('sudo sntp -sS timeserver.wu.ac.at')
+		#os.system('sudo sntp -sS timeserver.wu.ac.at')
+
+		self.browser.select_form('ea_stupl')
+		
+		form = self.browser.form
+		# Select first element in Select Options Dropdown
+		#item = form.find_control("ASPP").get(None ,None, None, 0)
+		# 122001_375772 Studienzweig Wirtschaftsinformatik"
+		# 197194_352468 BaWiRe-16/Haupt
+
+		item = form.find_control("ASPP").get("122001_375772")
+		item.selected = True
 
 		offset = 1.0	# seconds before start time when the request should be made
 		if self.args.planobject and self.args.course:
