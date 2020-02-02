@@ -217,13 +217,9 @@ class WuLpisApi():
 		#os.system('sudo sntp -sS timeserver.wu.ac.at')
 
 		self.browser.select_form('ea_stupl')
-		
 		form = self.browser.form
-		# Select first element in Select Options Dropdown
-		#item = form.find_control("ASPP").get(None ,None, None, 0)
-		# 122001_375772 Studienzweig Wirtschaftsinformatik"
-		# 197194_352468 BaWiRe-16/Haupt
-
+		### 122001_375772 Studienzweig Wirtschaftsinformatik"
+		### 197194_352468 BaWiRe-16/Haupt
 		item = form.find_control("ASPP").get("122001_375772")
 		item.selected = True
 
